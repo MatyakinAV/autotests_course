@@ -10,7 +10,7 @@ def letter_stat(our_str):
     letters_dict = {}
     q = 0  # кол-во повторений
     for k in our_str:
-        if letters_dict.get(k) == None:  # если такого значения нет
+        if letters_dict.get(k) is None:  # если такого значения нет
             letters_dict.update({k: 1})  # вписываем ключ и значение 1 в словарь
         else:
             q = letters_dict.get(k)  # записываем кол-во повторений буквы + 1

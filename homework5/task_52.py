@@ -11,7 +11,7 @@ def repeats(our_str):
     new_str = ''
     q = 0  # кол-во повторений
     for k in our_str:
-        if letters_dict.get(k) == None:  # если такого значения нет
+        if letters_dict.get(k) is None:  # если такого значения нет
             letters_dict.update({k: 1})  # вписываем ключ и значение 1 в словарь
             new_str = new_str + f'{k}_1'  # в строку добавляем букву и 1
         else:
