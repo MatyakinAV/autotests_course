@@ -27,6 +27,14 @@
 
 class PublicTransport:
     def __init__(self, brand, engine_power, year, color, max_speed):
+        """
+        Супер класс по основной инфе по ТС
+        :param brand: Марка транспорта
+        :param engine_power: Мощность двигателя - protected
+        :param year: Год выпуска
+        :param color: Цвет
+        :param max_speed: Максимальная скорость
+        """
         self.brand = brand
         self._engine_power = engine_power
         self.year = year
@@ -35,11 +43,26 @@ class PublicTransport:
 
     @property
     def info(self):
+        """
+        выводит на печать информацию о: марке, цвете, годе выпуска и мощности двигателя
+        :return:
+        """
         return print(self.brand, self.color, self.year, self._engine_power)
 
 
 class Bus(PublicTransport):
     def __init__(self, brand, engine_power, year, color, max_speed, passengers, park, fare):
+        """
+        Унаследован от PublicTransport , добавляем 3 аргумента кол-во пассажиров, парк приписки автобуса, стоимость проезда
+        :param brand:
+        :param engine_power:
+        :param year:
+        :param color:
+        :param max_speed:
+        :param passengers:
+        :param park: Private
+        :param fare: Protected
+        """
         super().__init__(brand, engine_power, year, color, max_speed)
         self.passengers = passengers
         self.__park = park
@@ -47,15 +70,36 @@ class Bus(PublicTransport):
 
     @property
     def park(self):
+        """
+        свойство возвращает парк к которому приписано ТС
+        :return:
+        """
         return self.__park
 
     @park.setter
     def park(self, park):
+        """
+        записывает новое значение в аргумент парк если оно в диапазоне от 1000 до 9999
+        :param park:
+        :return:
+        """
         assert 1000 <= park <= 9999
         self.__park = park
 
+
 class Tram(PublicTransport):
     def __init__(self, brand, engine_power, year, color, max_speed, route, path, fare):
+        """
+        Унаследован от PublicTransport добавили аргументы маршурт трамвая, длина маршрута и стоимость проезда
+        :param brand:
+        :param engine_power:
+        :param year:
+        :param color:
+        :param max_speed:
+        :param route: Private
+        :param path:
+        :param fare: Protected
+        """
         super().__init__(brand, engine_power, year, color, max_speed)
         self.__route = route
         self.path = path
@@ -63,7 +107,12 @@ class Tram(PublicTransport):
 
     @property
     def how_long(self):
+        """
+        Свойство возвращает значение которое вычисляет время прохождения маршрута по формуле max_speed/(4*path)
+        :return:
+        """
         return self.max_speed / (4 * self.path)
+
 
 # Ниже НИЧЕГО НЕ НАДО ИЗМЕНЯТЬ
 transport = PublicTransport('Автомобиль', 500, 2040, 'Фиолетовый', 300)

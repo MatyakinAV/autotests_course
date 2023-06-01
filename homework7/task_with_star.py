@@ -12,9 +12,17 @@
 
 class RomanNums:
     def __init__(self, rim):
+        """
+        В классе преобразовываем римское число в арабское и проверяемс это число палиндром ли оно
+        :param rim: римское число тип Str
+        """
         self.rim = rim
 
     def from_roman(self):
+        """
+        преобразовываем римское число в арабское
+        :return: Число типа int
+        """
         slovar = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
         nums = 0
         for k in range(len(self.rim) - 1):
@@ -26,6 +34,10 @@ class RomanNums:
         return nums
 
     def is_palindrome(self):
+        """
+        проверяем число палиндром или нет
+        :return: возвращаем True или False
+        """
         revers_rim = str(self.from_roman())
         return revers_rim == revers_rim[::-1]
 
