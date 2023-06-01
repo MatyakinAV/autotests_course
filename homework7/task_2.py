@@ -22,46 +22,59 @@
 # 1337*32*9 = 385056
 
 # Здесь пишем код
+from collections import Counter
+
 
 class PersonInfo:
     def __init__(self, fi: str, age: int, *args: list):
+        """
+        Класс персональных данных
+        :param fi: Фамилия имя типа str
+        :param age: Возраст типа int
+        :param args: Путь подразделенеия где работает сотрудник
+        """
         self.fi = fi
         self.age = age
         self.way = [*args]
 
     def short_name(self):
+        """
+        Метод палучениния из Фамилии Имени, Фамилии И.
+        :return: Фамилия И.
+        """
         fam = []
         fam = self.fi.split(' ')
         return f"{fam[1]} {fam[0][0]}."
 
     def path_deps(self):
-        stroka1 = ''
+        """
+        Возвращает путь "Головное подразделение --> ... --> Конечное подразделение"
+        :return: Строку с данными типа : Головное подразделение --> ... --> Конечное подразделение
+        """
+        path = ''
 
         for j in range(len(self.way)):
             if j < len(self.way) - 1:
-                stroka1 = stroka1 + ''.join(f'{self.way[j]} --> ')
+                path = path + ''.join(f'{self.way[j]} --> ')
             else:
-                stroka1 = stroka1 + ''.join(f'{self.way[j]}')
-        return stroka1
+                path = path + ''.join(f'{self.way[j]}')
+        return path
 
     def new_salary(self):
+        """
+        Метотод вычисляет новую зарплату по формуле: 1337* Возраст*суммарное кол-во вхождений трех наиболее часто встречающихся букв из списка подразделений
+        :return: 1337 * Age * amount_of_repeats ( суммарное кол-во вхождений трех наиболее часто встречающихся букв из списка подразделений )
+        """
         our_str = ''
-        letters_dict = {}
-        q = 0  # кол-во повторений
-        summa_povtor = 0
-        for v in self.way:
-            our_str = our_str + ''.join(self.way)
-        for k in our_str:
-            if letters_dict.get(k) is None:  # если такого значения нет
-                letters_dict.update({k: 1})  # вписываем ключ и значение 1 в словарь
-            else:
-                q = letters_dict.get(k)  # записываем кол-во повторений буквы + 1
-                letters_dict.update({k: q + 1})  # записываем в словарь новое значение к ключу
-
-        sorted_dict = sorted(letters_dict.items(), key=lambda x: x[1])
-        #top3 = sorted(updated, key=operator.itemgetter(1), reverse=True)[:3]
-        return 1337 * self.age * summa_povtor
-
+        popular = 3
+        amount_of_repeats = 0
+        for j in self.way:
+            our_str = our_str + ''.join(j)
+        our_str = list(our_str)
+        cnt = (Counter(our_str)).most_common(popular)
+        for k in range(popular):
+            amount_of_repeats += cnt[k][1]
+        return 1337 * self.age * amount_of_repeats
 
 
 # Ниже НИЧЕГО НЕ НАДО ИЗМЕНЯТЬ

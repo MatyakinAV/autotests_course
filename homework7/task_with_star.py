@@ -10,6 +10,26 @@
 
 # Здесь пишем код
 
+class RomanNums:
+    def __init__(self, rim):
+        self.rim = rim
+
+    def from_roman(self):
+        slovar = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+        nums = 0
+        for k in range(len(self.rim) - 1):
+            if slovar[self.rim[k]] < slovar[self.rim[k + 1]]:
+                nums -= slovar[self.rim[k]]
+            elif slovar[self.rim[k]] >= slovar[self.rim[k + 1]]:
+                nums += slovar[self.rim[k]]
+        nums = nums + slovar[self.rim[len(self.rim) - 1]]
+        return nums
+
+    def is_palindrome(self):
+        revers_rim = str(self.from_roman())
+        return revers_rim == revers_rim[::-1]
+
+
 # Ниже НИЧЕГО НЕ НАДО ИЗМЕНЯТЬ
 
 
@@ -36,7 +56,6 @@ data = [RomanNums('MMMCCLXIII').from_roman,
         RomanNums('XXX').is_palindrome,
         RomanNums('D').is_palindrome,
         ]
-
 
 test_data = [3263, 134, 86, 1405, 978, 3404, 910, 2388, 2008, 1179, 3795, 988, 999, 444,
              True, True, False, False, True, True, False, False]
