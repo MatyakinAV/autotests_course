@@ -44,11 +44,9 @@ def func_log(file_log='log.txt'):
     :return:
     """
     def writer(func):
-        def wrapper(*args, **kwargs):
+        def wrapper():
             res_func = Path(Path.cwd(), file_log)  # вызов функции
             now = datetime.now(func())
-            month = now.strftime("%m")
-            day = now.strftime("%d")
             date_time = now.strftime("%d.%m %H:%M:%S")
             with open(res_func, "a+", encoding='utf-8') as file:
                 file.write(f'{func.__name__} вызвана {date_time}\n')

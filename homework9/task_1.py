@@ -8,13 +8,10 @@
 import re
 with open("test_file/task1_answer.txt", 'a+', encoding='utf-8') as file1:
     with open("test_file/task1_data.txt", encoding='utf-8') as file:
-        a = True
-        while a:
-            file_line = file.readline()
-            s1 = re.sub("\n", "", file_line)
+        for line in file.readlines():
+            s1 = re.sub("[0-9]", "", line)
             file1.write(s1)
-            if not file_line:
-                a = False
+
 # Ниже НИЧЕГО НЕ НАДО ИЗМЕНЯТЬ
 
 

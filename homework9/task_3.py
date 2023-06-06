@@ -9,13 +9,11 @@ import re
 import heapq
 with open('test_file/task_3.txt', encoding='utf-8') as file:
     lst = []
-    a = True
     summa_cheka = 0
-#    while a:
     file_line = list(file.readlines())
     for i in file_line:
         if i != '\n':
-            summa_cheka += int(re.sub("\n", "", i))
+            summa_cheka += int(i)
         else:
             lst.append(summa_cheka)
             summa_cheka = 0
