@@ -5,50 +5,42 @@
 # Проверить, что есть блок новости "Сила в людях"
 # Перейдите в этом блоке в "Подробнее" и убедитесь, что открывается https://tensor.ru/about
 # Для сдачи задания пришлите код и запись с экрана прохождения теста
-import time
+
 
 from selenium import webdriver
+from time import sleep
 from selenium.webdriver.common.by import By
 
 sbis_site = 'https://sbis.ru/'
-sbis_tensor = 'https://tensor.ru/'
 driver = webdriver.Chrome()
+driver.maximize_window()
 try:
-    #  Заходим на сайт 'https://sbis.ru/'
     driver.get(sbis_site)
-    driver.maximize_window()
-    assert driver.current_url == sbis_site, 'Не верно открыт сайт'
-
-    #  Переходим по кнопке Контакты
-    contact_btn = driver.find_element(By.CSS_SELECTOR, '.sbisru-Header__menu-item [href = "/contacts"]')
-    assert contact_btn.text == 'Контакты', 'Неправильный текст кнопки'
-    assert contact_btn.is_displayed(), 'Кнопка не отображается'
-    contact_btn.click()
-    time.sleep(3)
-
-    #  Смотрим логотип Тензор и переходим по нему
-    tensor_btn = driver.find_element(By.CSS_SELECTOR, '[class="sbisru-Contacts__logo-tensor mb-8"]')
-    assert tensor_btn.is_displayed(), 'Кнопка не отображается'
-    time.sleep(3)
-    tensor_btn.click()
-
-    time.sleep(3)
+    assert driver.current_url == sbis_site, 'Не верно открыт сайт'  # проверяем что тот сайт который надо открылся
+    assert driver.title == 'СБИС — экосистема для бизнеса: учет, управление и коммуникации', 'Не верный заголовок'  # Проверяем тайтл
+    contacts = driver.find_element(By.CSS_SELECTOR, '.sbisru-Header__menu-link[href = "/contacts"]')
+    assert contacts.text =='Контакты', 'Текст кнопки изменился'
+    assert contacts.is_displayed(), 'Не отображается кнопка'
+    assert contacts.get_attribute('title') == '', 'Тайтл изменился : был "" '
+    contacts.click()
+    sleep(2)
+    logo_tensor = driver.find_element(By.CSS_SELECTOR, '.sbisru-Contacts__border-left--border-xm '
+                                                       '.sbisru-Contacts__logo-tensor')
+    assert logo_tensor.get_attribute('href') == 'https://tensor.ru/', 'Не верная ссылка на сайт, должно быть https://tensor.ru/'
+    #  Нужно ли проверять что сменилась картинка? адрес хранения картинки
+    # Переход на страницу Тензор.ру
+    logo_tensor.click()
+    sleep(2)
     driver.switch_to.window(driver.window_handles[1])
-    assert driver.current_url == sbis_tensor, 'Не верно открыт сайт'
-
-    #  Смотрим блок Сила в людях и переходим по нему
-    time.sleep(3)
-    news_btn = driver.find_element(By.CSS_SELECTOR, '[class="s-Grid-col s-Grid-col--6 s-Grid-col--sm12"] ' 
-                                                    '[class="tensor_ru-Index__card-title tensor_ru-pb-16"]')
-    assert news_btn.text == 'Сила в людях', 'Нет заголовка "Сила в людях"'
-    assert news_btn.is_displayed(), 'Новость не отображается'
-
-    news_btn_about = driver.find_element(By.CSS_SELECTOR, '[class="s-Grid-col s-Grid-col--6 s-Grid-col--sm12"] '
-                                                          '[class="tensor_ru-link tensor_ru-Index__link"]')
-    news_btn_about.location_once_scrolled_into_view
-    assert news_btn_about.text == 'Подробнее', 'Не правильный текст, нужно чтобы был :  "Подробнее"'
-    news_btn_about.click()
-    time.sleep(3)
-    assert driver.current_url == "https://tensor.ru/about", 'не тот сайт открыт'
+    block_svl = driver.find_element(By.CSS_SELECTOR, '[class = "tensor_ru-Index__block4-content tensor_ru-Index__card"] '
+                                                     '[class = "tensor_ru-Index__card-title tensor_ru-pb-16"]')  # Нашли блок Сила в людях
+    assert block_svl.text == 'Сила в людях', ' Неправильный текст блока'
+    assert block_svl.is_displayed(), ' Не видно блок'
+    ssylka_podrobnee = driver.find_element(By.CSS_SELECTOR, '[class = "tensor_ru-Index__block4-content tensor_ru-Index__card"] [href="/about"]')
+    ssylka_podrobnee.location_once_scrolled_into_view
+    assert ssylka_podrobnee.get_attribute('href') == 'https://tensor.ru/about', 'Не верная ссылка на сайт'
+    assert ssylka_podrobnee.text == 'Подробнее', 'Не верный текст'
+    ssylka_podrobnee.click()
+    sleep(5)
 finally:
     driver.quit()
